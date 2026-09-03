@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "cp index.source.html index.html",
     "dev": "vite",
+    "prebuild": "cp index.source.html index.html",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },

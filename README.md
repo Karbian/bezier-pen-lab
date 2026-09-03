@@ -14,7 +14,7 @@ An interactive Grade 8 platform for learning vector paths and the Pen Tool throu
 
 ## Live GitHub Pages site
 
-After the deployment workflow completes:
+Published from the production build committed at the repository root:
 
 **https://karbian.github.io/bezier-pen-lab/**
 
@@ -37,6 +37,6 @@ The static site is generated in `dist/`.
 
 ## Deployment
 
-Every push to `main` runs the GitHub Pages workflow in
-`.github/workflows/deploy-pages.yml`. The workflow builds the Vite application
-and publishes `dist/` to GitHub Pages.
+Source changes on `main` run `.github/workflows/deploy-pages.yml`. The workflow
+builds the Vite application and refreshes the branch-hosted production assets.
+GitHub Pages then publishes the repository root.

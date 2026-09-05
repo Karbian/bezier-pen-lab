@@ -120,12 +120,26 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 }
 .budget strong { display: block; font-size: 1.1rem; }
 
+.handle-controls {
+  display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .65rem;
+}
+.handle-mode {
+  min-height: 44px; padding: .6rem .8rem; display: inline-flex; align-items: center;
+  justify-content: space-between; gap: .7rem; flex: 1 1 220px; color: var(--ink);
+  background: white; border: 1px solid #bdc8e3; border-radius: 8px;
+  font-size: .875rem; font-weight: 700; cursor: pointer; touch-action: manipulation;
+}
+.handle-mode span { font-weight: 800; }
+.handle-mode[aria-pressed="true"] { color: white; background: var(--blue-dark); border-color: var(--blue-dark); }
+.handle-mode:hover { box-shadow: inset 0 0 0 1px var(--blue); }
+.handle-controls p { flex-basis: 100%; margin: 0; color: var(--ink-soft); font-size: .875rem; line-height: 1.45; }
+
 .toolbar {
-  min-height: 48px; padding: .4rem; display: flex; align-items: center; gap: .34rem; overflow-x: auto;
+  min-height: 48px; padding: .4rem; display: flex; flex-wrap: wrap; align-items: center; gap: .34rem;
   color: white; background: #182143; border: 1px solid #25315d; border-radius: 11px 11px 0 0;
 }
 .tool-button {
-  min-height: 36px; padding: .44rem .65rem; display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; min-width: 44px; padding: .44rem .65rem; display: inline-flex; align-items: center; justify-content: center;
   gap: .38rem; flex: 0 0 auto; color: #edf0fc; background: transparent; border: 1px solid transparent;
   border-radius: 7px; cursor: pointer; font-size: .82rem; font-weight: 700;
 }
@@ -137,9 +151,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 
 .canvas-wrap {
   position: relative; min-height: 500px; overflow: hidden; background: white; border: 1px solid #cfd6e4;
-  border-top: 0; border-radius: 0 0 11px 11px; box-shadow: 0 14px 35px rgba(29,42,82,.09); touch-action: none;
+  border-top: 0; border-radius: 0 0 11px 11px; box-shadow: 0 14px 35px rgba(29,42,82,.09);
 }
-.drawing-canvas { width: 100%; height: auto; min-height: 500px; display: block; cursor: crosshair; user-select: none; }
+.drawing-canvas { width: 100%; height: auto; min-height: 500px; display: block; cursor: crosshair; user-select: none; touch-action: none; }
 .canvas-grid { fill: url(#grid-pattern); }
 .target-path {
   fill: color-mix(in srgb, var(--blue) 7%, transparent); stroke: #9ba9ce; stroke-width: 12;
@@ -314,7 +328,6 @@ kbd {
   .progress-pill { min-width: 104px; padding: .4rem .52rem; }
   .progress-copy { font-size: .68rem; }
   .studio { padding-inline: .55rem; }
-  .tool-label { display: none; }
   .canvas-wrap, .drawing-canvas { min-height: 370px; }
 }
 @media (prefers-reduced-motion: reduce) {

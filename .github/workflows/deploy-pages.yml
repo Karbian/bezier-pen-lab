@@ -11,6 +11,7 @@ on:
       - "package-lock.json"
       - "vite.config.ts"
       - "tsconfig*.json"
+      - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -42,14 +43,16 @@ jobs:
       - name: Refresh branch-hosted assets
         run: |
           rm -rf assets
+          rm -rf illustrator
           cp -R dist/assets assets
+          cp -R dist/illustrator illustrator
           cp dist/index.html index.html
           cp dist/favicon.svg favicon.svg
           cp dist/homer-reference.png homer-reference.png
 
       - name: Commit refreshed build
         run: |
-          git add assets index.html favicon.svg homer-reference.png
+          git add assets illustrator index.html favicon.svg homer-reference.png
           if git diff --cached --quiet; then
             echo "Published assets are already current."
             exit 0

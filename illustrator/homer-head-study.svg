@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="900" viewBox="270 25 320 450" role="img" aria-labelledby="title desc">
+  <title id="title">Homer head layered vector study</title>
+  <desc id="desc">Eleven separately grouped vector parts based on the supplied classroom Illustrator guide.</desc>
+  <metadata>Bézier Pen Lab · Grade 8 · Adobe Illustrator editable master</metadata>
+  <g id="head" data-name="1. Head and neck">
+    <path d="M 345 445 L 337 354 C 334 310 321 280 302 238 C 272 171 291 89 360 62 C 444 30 520 75 538 151 C 554 159 558 181 544 196 C 524 225 521 274 526 317 L 537 441 C 478 463 406 466 345 445 Z" fill="#fcd80d" stroke="#181818" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+  <g id="ear" data-name="2. Ear">
+    <path d="M 339 278 C 310 265 294 292 303 322 C 312 348 344 347 360 325 C 348 313 332 312 322 325 C 323 309 338 300 352 307 C 355 294 350 283 339 278 Z" fill="#fcd80d" stroke="#181818" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+  <g id="left-eye" data-name="3. Left eye">
+    <path d="M 414 145 C 454 145 476 169 474 205 C 472 241 448 260 410 256 C 374 252 362 225 367 190 C 371 160 389 145 414 145 Z" fill="#ffffff" stroke="#181818" stroke-width="4"/>
+  </g>
+  <g id="right-eye" data-name="4. Right eye">
+    <path d="M 483 143 C 519 143 541 165 539 198 C 537 231 516 249 482 246 C 454 243 447 218 451 184 C 454 157 467 143 483 143 Z" fill="#ffffff" stroke="#181818" stroke-width="4"/>
+  </g>
+  <g id="nose" data-name="5. Rounded nose">
+    <path d="M 472 227 C 505 212 547 219 554 240 C 563 266 531 276 496 270 C 475 267 460 245 472 227 Z" fill="#fcd80d" stroke="#181818" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+  <g id="muzzle" data-name="6. Mouth and beard area">
+    <path d="M 401 250 C 442 230 507 233 542 253 C 565 266 571 294 550 309 C 536 319 518 319 499 316 C 506 350 486 379 452 388 C 409 399 373 371 369 333 C 365 298 378 269 401 250 Z" fill="#d4b776" stroke="#181818" stroke-width="4" stroke-linejoin="round"/>
+  </g>
+  <g id="left-pupil" data-name="7. Left pupil">
+    <path d="M 418 193 C 426 193 431 198 431 205 C 431 212 426 217 418 217 C 410 217 405 212 405 205 C 405 198 410 193 418 193 Z" fill="#181818" stroke="#181818"/>
+  </g>
+  <g id="right-pupil" data-name="8. Right pupil">
+    <path d="M 499 187 C 507 187 512 192 512 199 C 512 206 507 211 499 211 C 491 211 486 206 486 199 C 486 192 491 187 499 187 Z" fill="#181818" stroke="#181818"/>
+  </g>
+  <g id="hair" data-name="9. Hair curves">
+    <path d="M 330 103 C 321 50 368 29 397 77 C 400 39 449 34 470 76" fill="none" stroke="#181818" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g id="sideburn" data-name="10. Sideburn">
+    <path d="M 335 250 L 314 219 L 316 310 L 338 288" fill="none" stroke="#181818" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g id="mouth-line" data-name="11. Mouth line">
+    <path d="M 399 325 C 438 341 482 342 516 330" fill="none" stroke="#181818" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

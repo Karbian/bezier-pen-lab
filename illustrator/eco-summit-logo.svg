@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="900" viewBox="180 30 520 450" role="img" aria-labelledby="title desc">
+  <title id="title">Eco Summit layered logo</title>
+  <desc id="desc">Five separately grouped vector shapes for Adobe Illustrator pen-tool practice.</desc>
+  <metadata>Bézier Pen Lab · Grade 8 · Adobe Illustrator editable master</metadata>
+  <g id="badge" data-name="1. Organic badge">
+    <path d="M 440 52 C 575 52 670 135 670 242 C 670 350 575 420 440 450 C 305 420 210 350 210 242 C 210 135 305 52 440 52 Z" fill="#15224f" stroke="#15224f" stroke-linejoin="round"/>
+  </g>
+  <g id="sun" data-name="2. Rising sun">
+    <path d="M 440 112 C 490 112 522 142 522 183 C 522 224 490 252 440 252 C 390 252 358 224 358 183 C 358 142 390 112 440 112 Z" fill="#ffdd57" stroke="#ffdd57" stroke-linejoin="round"/>
+  </g>
+  <g id="mountains" data-name="3. Mountain ridge">
+    <path d="M 265 338 L 370 188 L 435 272 L 510 170 L 618 338 C 532 317 354 317 265 338 Z" fill="#ff765f" stroke="#ff765f" stroke-linejoin="round"/>
+  </g>
+  <g id="river" data-name="4. River ribbon">
+    <path d="M 267 342 C 355 316 438 370 616 329 C 568 405 359 425 267 342 Z" fill="#4da8ff" stroke="#4da8ff" stroke-linejoin="round"/>
+  </g>
+  <g id="leaf" data-name="5. Direction leaf">
+    <path d="M 510 292 C 520 205 583 151 650 154 C 644 230 594 282 528 298 C 574 254 608 201 650 154 C 590 194 548 246 510 292 Z" fill="#46c98a" stroke="#46c98a" stroke-linejoin="round"/>
+  </g>
+</svg>

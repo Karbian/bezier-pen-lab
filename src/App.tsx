@@ -1007,6 +1007,19 @@ ${paths}
                 </div>
               )}
 
+              <div className="coach-card illustrator-card">
+                <h4>Adobe Illustrator file</h4>
+                <p>Open the editable SVG in Illustrator on the web to inspect the separate vector groups, colors and stacking order.</p>
+                <a
+                  className="secondary-button asset-link"
+                  href={`${import.meta.env.BASE_URL}${stage.illustratorAsset}`}
+                  download
+                >
+                  <Download size={15} aria-hidden="true" />
+                  Download editable SVG
+                </a>
+              </div>
+
               <div className="coach-card">
                 <h4>Evidence details</h4>
                 <div className="form-stack">

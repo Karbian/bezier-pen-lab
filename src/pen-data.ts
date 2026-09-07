@@ -34,6 +34,7 @@ export type BuildStage = StageBase & {
   artifactName: string;
   challengeLabel: string;
   parts: DrawingSpec[];
+  illustratorAsset: string;
   referenceImage?: string;
   referenceAlt?: string;
   reflectionPrompt: string;
@@ -445,6 +446,7 @@ export const STAGES: Stage[] = [
     artifactName: "Eco Summit Logo",
     challengeLabel: "Complex logo evidence",
     parts: ECO_SUMMIT_PARTS,
+    illustratorAsset: "illustrator/eco-summit-logo.svg",
     reflectionPrompt:
       "Which separate shape contributes most to the logo’s visual message, and how did you make it editable?",
   },
@@ -461,6 +463,7 @@ export const STAGES: Stage[] = [
     artifactName: "Homer Head Study",
     challengeLabel: "Character construction evidence",
     parts: HOMER_PARTS,
+    illustratorAsset: "illustrator/homer-head-study.svg",
     referenceImage: "homer-reference.png",
     referenceAlt: "Completed Homer head reference from the supplied Illustrator drawing guide",
     reflectionPrompt:

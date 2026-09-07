@@ -192,6 +192,14 @@ kbd {
   width: 100%; min-height: 40px; margin-top: .6rem; padding: .56rem .7rem;
   border-radius: 8px; cursor: pointer; font-size: .82rem; font-weight: 800;
 }
+.asset-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .38rem;
+  text-decoration: none;
+}
+.illustrator-card { border-left: 4px solid #ff9a00; }
 .next-button, .download-button { color: white; background: var(--blue); border: 1px solid var(--blue); }
 .secondary-button { color: var(--blue-dark); background: white; border: 1px solid #bdc8ed; }
 .brief-select, .student-field, .reflection-field {

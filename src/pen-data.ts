@@ -35,6 +35,7 @@ export type BuildStage = StageBase & {
   challengeLabel: string;
   parts: DrawingSpec[];
   illustratorAsset: string;
+  illustratorCloudUrl?: string;
   referenceImage?: string;
   referenceAlt?: string;
   reflectionPrompt: string;
@@ -464,6 +465,8 @@ export const STAGES: Stage[] = [
     challengeLabel: "Character construction evidence",
     parts: HOMER_PARTS,
     illustratorAsset: "illustrator/homer-head-study.svg",
+    illustratorCloudUrl:
+      "https://illustrator.adobe.com/id/urn:aaid:sc:US:ac2ea5fb-14da-43bb-ac4f-7e79eac6fcc9",
     referenceImage: "homer-reference.png",
     referenceAlt: "Completed Homer head reference from the supplied Illustrator drawing guide",
     reflectionPrompt:

@@ -1010,6 +1010,17 @@ ${paths}
               <div className="coach-card illustrator-card">
                 <h4>Adobe Illustrator file</h4>
                 <p>Open the editable SVG in Illustrator on the web to inspect the separate vector groups, colors and stacking order.</p>
+                {stage.illustratorCloudUrl && (
+                  <a
+                    className="secondary-button asset-link"
+                    href={stage.illustratorCloudUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <PenTool size={15} aria-hidden="true" />
+                    Open shared Illustrator document
+                  </a>
+                )}
                 <a
                   className="secondary-button asset-link"
                   href={`${import.meta.env.BASE_URL}${stage.illustratorAsset}`}

@@ -49,9 +49,9 @@ const PRACTICE_STAGES: PracticeStage[] = [
     id: "corners",
     title: "Exercise 1 · Corner Points",
     shortTitle: "Corners",
-    skill: "Click, don’t drag",
+    skill: "Tap, don’t drag",
     instruction:
-      "Trace the angular path. Click once at every direction change, then click the first anchor to close it.",
+      "Trace the angular path. Tap or click once at every direction change, then choose Close path.",
     coaching:
       "Straight segments need corner anchors. Place them exactly where the line changes direction.",
     target: "M 175 365 L 295 205 L 390 315 L 520 155 L 705 365 Z",
@@ -69,7 +69,7 @@ const PRACTICE_STAGES: PracticeStage[] = [
     id: "smooth",
     title: "Exercise 2 · Smooth Curves",
     shortTitle: "Smooth curves",
-    skill: "Click and drag",
+    skill: "Press and drag",
     instruction:
       "Build the capsule with four smooth anchors. Drag while placing each point to create direction handles.",
     coaching:
@@ -93,7 +93,7 @@ const PRACTICE_STAGES: PracticeStage[] = [
     instruction:
       "Trace the heart. Use smooth curves for the lobes and a corner point at the bottom tip.",
     coaching:
-      "A corner can connect two curved segments. Drag its handles, then hold Alt/Option while adjusting one side.",
+      "A corner can connect two curved segments. Create its handles, turn on Independent handles, then drag one side. Alt/Option also works with a keyboard.",
     target:
       "M 440 402 C 375 335 265 275 265 180 C 265 105 350 88 440 182 C 530 88 615 105 615 180 C 615 275 505 335 440 402 Z",
     budget: 4,
@@ -109,9 +109,9 @@ const PRACTICE_STAGES: PracticeStage[] = [
     id: "ribbon",
     title: "Exercise 4 · Broken Handles",
     shortTitle: "Ribbon mark",
-    skill: "Alt/Option handles",
+    skill: "Independent handles",
     instruction:
-      "Trace this flowing ribbon. Use Alt/Option when one side of an anchor needs a different direction.",
+      "Trace this flowing ribbon. Turn on Independent handles when one side of an anchor needs a different direction. Alt/Option also works with a keyboard.",
     coaching:
       "Fewer well-placed anchors create cleaner logos. Break a handle only where the curve changes character.",
     target:

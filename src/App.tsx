@@ -28,6 +28,7 @@ import {
   type Point,
   type Stage,
 } from "./pen-data";
+import { canStartPointer, clientToCanvas, handlePositions } from "./pen-input";
 
 type Anchor = { x: number; y: number; in: Point; out: Point };
 type Work = { points: Anchor[]; closed: boolean; finished: boolean };
@@ -62,15 +63,6 @@ function cloneWork(work: Work): Work {
 
 function distance(a: Point, b: Point) {
   return Math.hypot(a.x - b.x, a.y - b.y);
-}
-
-function snapVector(dx: number, dy: number, enabled: boolean) {
-  if (!enabled) return { x: dx, y: dy };
-  const length = Math.hypot(dx, dy);
-  if (!length) return { x: 0, y: 0 };
-  const step = Math.PI / 4;
-  const angle = Math.round(Math.atan2(dy, dx) / step) * step;
-  return { x: Math.cos(angle) * length, y: Math.sin(angle) * length };
 }
 
 function workToPath(work: Work) {
@@ -156,6 +148,8 @@ export default function App() {
   const [drag, setDrag] = useState<DragState>(null);
   const [showHint, setShowHint] = useState(false);
   const [showGuide, setShowGuide] = useState(true);
+  const [constrainAngles, setConstrainAngles] = useState(false);
+  const [independentHandles, setIndependentHandles] = useState(false);
   const [lastResult, setLastResult] = useState<Result | null>(null);
   const [studentName, setStudentName] = useState("");
   const [studentGroup, setStudentGroup] = useState("");
@@ -163,6 +157,7 @@ export default function App() {
   const [hydrated, setHydrated] = useState(false);
 
   const svgRef = useRef<SVGSVGElement | null>(null);
+  const activePointerId = useRef<number | null>(null);
   const targetPathRef = useRef<SVGPathElement | null>(null);
   const studentPathRef = useRef<SVGPathElement | null>(null);
 
@@ -287,13 +282,10 @@ export default function App() {
   );
 
   const pointFromEvent = useCallback((event: ReactPointerEvent<SVGElement>) => {
-    const svg = svgRef.current;
-    if (!svg) return { x: 0, y: 0 };
-    const rect = svg.getBoundingClientRect();
-    return {
-      x: ((event.clientX - rect.left) / rect.width) * VIEWBOX.width,
-      y: ((event.clientY - rect.top) / rect.height) * VIEWBOX.height,
-    };
+    return clientToCanvas(
+      { x: event.clientX, y: event.clientY },
+      svgRef.current?.getScreenCTM() ?? null,
+    );
   }, []);
 
   const undo = useCallback(() => {
@@ -358,8 +350,14 @@ export default function App() {
   }, [deleteSelected, redo, undo]);
 
   const startCanvasPoint = (event: ReactPointerEvent<SVGSVGElement>) => {
-    if (work.finished) return;
+    if (work.finished || !canStartPointer(event, activePointerId.current)) return;
     const point = pointFromEvent(event);
+    if (
+      !point || point.x < 0 || point.x > VIEWBOX.width ||
+      point.y < 0 || point.y > VIEWBOX.height
+    ) return;
+    event.preventDefault();
+    activePointerId.current = event.pointerId;
     pushHistory();
     invalidateScore();
     const nextAnchor: Anchor = {
@@ -380,6 +378,10 @@ export default function App() {
     index: number,
   ) => {
     event.stopPropagation();
+    if (!canStartPointer(event, activePointerId.current)) return;
+    const start = pointFromEvent(event);
+    if (!start) return;
+    event.preventDefault();
     if (index === 0 && spec.closed && !work.finished && work.points.length >= 3) {
       pushHistory();
       setWork((previous) => ({ ...previous, closed: true, finished: true }));
@@ -389,6 +391,7 @@ export default function App() {
     }
     const origin = work.points[index];
     if (!origin) return;
+    activePointerId.current = event.pointerId;
     pushHistory();
     invalidateScore();
     setSelected(index);
@@ -396,7 +399,7 @@ export default function App() {
       type: "anchor",
       index,
       pointerId: event.pointerId,
-      start: pointFromEvent(event),
+      start,
       origin: cloneWork({ points: [origin], closed: false, finished: false }).points[0],
     });
     svgRef.current?.setPointerCapture(event.pointerId);
@@ -408,6 +411,9 @@ export default function App() {
     handle: "in" | "out",
   ) => {
     event.stopPropagation();
+    if (!canStartPointer(event, activePointerId.current)) return;
+    event.preventDefault();
+    activePointerId.current = event.pointerId;
     pushHistory();
     invalidateScore();
     setSelected(index);
@@ -418,6 +424,7 @@ export default function App() {
   const movePointer = (event: ReactPointerEvent<SVGSVGElement>) => {
     if (!drag || drag.pointerId !== event.pointerId) return;
     const pointer = pointFromEvent(event);
+    if (!pointer) return;
     setWork((previous) => {
       const points = previous.points.map((item) => ({
         ...item,
@@ -428,13 +435,10 @@ export default function App() {
       if (!anchor) return previous;
 
       if (drag.type === "new-handle") {
-        const vector = snapVector(
-          pointer.x - anchor.x,
-          pointer.y - anchor.y,
-          event.shiftKey,
-        );
-        anchor.out = { x: anchor.x + vector.x, y: anchor.y + vector.y };
-        anchor.in = { x: anchor.x - vector.x, y: anchor.y - vector.y };
+        // Creating a smooth point still makes a pair; independence edits one side afterward.
+        Object.assign(anchor, handlePositions(
+          anchor, pointer, "out", constrainAngles || event.shiftKey, false,
+        ));
       } else if (drag.type === "anchor") {
         const dx = pointer.x - drag.start.x;
         const dy = pointer.y - drag.start.y;
@@ -443,27 +447,23 @@ export default function App() {
         anchor.in = { x: drag.origin.in.x + dx, y: drag.origin.in.y + dy };
         anchor.out = { x: drag.origin.out.x + dx, y: drag.origin.out.y + dy };
       } else {
-        const vector = snapVector(
-          pointer.x - anchor.x,
-          pointer.y - anchor.y,
-          event.shiftKey,
-        );
-        anchor[drag.handle] = { x: anchor.x + vector.x, y: anchor.y + vector.y };
-        if (!event.altKey) {
-          const opposite = drag.handle === "in" ? "out" : "in";
-          anchor[opposite] = { x: anchor.x - vector.x, y: anchor.y - vector.y };
-        }
+        Object.assign(anchor, handlePositions(
+          anchor, pointer, drag.handle,
+          constrainAngles || event.shiftKey,
+          independentHandles || event.altKey,
+        ));
       }
       return { ...previous, points };
     });
   };
 
   const stopPointer = (event: ReactPointerEvent<SVGSVGElement>) => {
-    if (!drag || drag.pointerId !== event.pointerId) return;
+    if (activePointerId.current !== event.pointerId) return;
+    activePointerId.current = null;
+    setDrag(null);
     if (svgRef.current?.hasPointerCapture(event.pointerId)) {
       svgRef.current.releasePointerCapture(event.pointerId);
     }
-    setDrag(null);
   };
 
   const finishPath = () => {
@@ -733,6 +733,29 @@ ${paths}
             </div>
           </div>
 
+          <div className="handle-controls" role="group" aria-label="Handle controls" aria-describedby="handle-controls-help">
+            <button
+              className="handle-mode"
+              type="button"
+              aria-pressed={constrainAngles}
+              onClick={() => setConstrainAngles((value) => !value)}
+            >
+              Snap angles (45°) <span>{constrainAngles ? "On" : "Off"}</span>
+            </button>
+            <button
+              className="handle-mode"
+              type="button"
+              aria-pressed={independentHandles}
+              onClick={() => setIndependentHandles((value) => !value)}
+            >
+              Independent handles <span>{independentHandles ? "On" : "Off"}</span>
+            </button>
+            <p id="handle-controls-help">
+              Snap angles locks handle directions to 45° steps. Independent handles lets
+              you adjust one existing handle without moving the other. Keyboard: Shift / Alt (Option).
+            </p>
+          </div>
+
           <div className="toolbar" role="toolbar" aria-label="Drawing tools">
             <button className="tool-button active" type="button" aria-pressed="true" title="Pen tool">
               <PenTool size={17} />
@@ -785,6 +808,7 @@ ${paths}
               onPointerMove={movePointer}
               onPointerUp={stopPointer}
               onPointerCancel={stopPointer}
+              onLostPointerCapture={stopPointer}
             >
               <defs>
                 <pattern id="grid-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -909,11 +933,11 @@ ${paths}
             </svg>
             <div className="canvas-tip">
               {!work.points.length
-                ? "Start on a highlighted anchor: click for a corner or click and drag for a curve."
+                ? "Start on a highlighted anchor: tap or click for a corner; press and drag for a curve."
                 : work.finished
                   ? "Path finished. Select anchors or handles to refine it, then press Check."
                   : spec.closed
-                    ? "Continue around the outline. Click the green first anchor—or use Close path—to finish."
+                    ? "Continue around the outline. Tap the green first anchor or use Close path to finish."
                     : "Follow the open guide from one end to the other, then choose Finish stroke."}
             </div>
           </div>
@@ -1084,10 +1108,10 @@ ${paths}
           ) : (
             <>
               <div className="coach-card">
-                <h4>Illustrator-style controls</h4>
+                <h4>Touch and keyboard controls</h4>
                 <div className="shortcut-list">
-                  <div className="shortcut-row"><span>Constrain handle angle</span><kbd>Shift</kbd></div>
-                  <div className="shortcut-row"><span>Break handle pair</span><kbd>Alt</kbd></div>
+                  <div className="shortcut-row"><span>Snap angles button</span><kbd>Shift</kbd></div>
+                  <div className="shortcut-row"><span>Independent handles button</span><kbd>Alt</kbd></div>
                   <div className="shortcut-row"><span>Undo</span><kbd>Ctrl Z</kbd></div>
                   <div className="shortcut-row"><span>Delete anchor</span><kbd>Del</kbd></div>
                 </div>

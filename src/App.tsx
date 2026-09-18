@@ -28,6 +28,7 @@ import {
   type Point,
   type Stage,
 } from "./pen-data";
+import ShapeStudio from "./ShapeStudio";
 
 type Anchor = { x: number; y: number; in: Point; out: Point };
 type Work = { points: Anchor[]; closed: boolean; finished: boolean };
@@ -146,6 +147,7 @@ function downloadText(filename: string, content: string, type: string) {
 }
 
 export default function App() {
+  const [learningMode, setLearningMode] = useState<"guided" | "pen">("guided");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeParts, setActiveParts] = useState<Record<string, number>>({});
   const [works, setWorks] = useState<Record<string, Work>>({});
@@ -648,22 +650,58 @@ ${paths}
           <span className="brand-mark" aria-hidden="true" />
           <div>
             <h1>Bézier Pen Lab</h1>
-            <p>Vector drawing practice · Grade 8</p>
+            <p>Guided vector drawing and pen practice · Grade 8</p>
           </div>
         </div>
-        <div
-          className="progress-pill"
-          aria-label={`${completedCount} of ${STAGES.length} stages complete`}
-        >
-          <div className="progress-copy">
-            <span>Course progress</span>
-            <span>{completedCount}/{STAGES.length}</span>
+        {learningMode === "pen" ? (
+          <div
+            className="progress-pill"
+            aria-label={`${completedCount} of ${STAGES.length} stages complete`}
+          >
+            <div className="progress-copy">
+              <span>Course progress</span>
+              <span>{completedCount}/{STAGES.length}</span>
+            </div>
+            <div className="progress-track" aria-hidden="true">
+              <span style={{ width: `${progress}%` }} />
+            </div>
           </div>
-          <div className="progress-track" aria-hidden="true">
-            <span style={{ width: `${progress}%` }} />
+        ) : (
+          <div className="guided-header-badge">
+            <span aria-hidden="true">★</span>
+            Accessible start
           </div>
-        </div>
+        )}
       </header>
+
+      <div className="mode-switch" role="tablist" aria-label="Choose a learning pathway">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={learningMode === "guided"}
+          className={learningMode === "guided" ? "active" : ""}
+          onClick={() => setLearningMode("guided")}
+        >
+          <span aria-hidden="true">● ■ ▲</span>
+          Guided shapes
+          <small>Start here</small>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={learningMode === "pen"}
+          className={learningMode === "pen" ? "active" : ""}
+          onClick={() => setLearningMode("pen")}
+        >
+          <PenTool size={20} aria-hidden="true" />
+          Pen paths
+          <small>Next skill</small>
+        </button>
+      </div>
+
+      {learningMode === "guided" ? (
+        <ShapeStudio />
+      ) : (
 
       <div className="workspace">
         <nav className="stage-rail" aria-label="Pen tool exercises">
@@ -1104,6 +1142,7 @@ ${paths}
           )}
         </aside>
       </div>
+      )}
     </div>
   );
 }
